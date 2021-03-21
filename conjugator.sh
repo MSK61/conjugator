@@ -53,7 +53,7 @@ function ProcessVerb()
 
 }
 
-mkdir output
+mkdir -p output
 
 for verb in input/*
    do
