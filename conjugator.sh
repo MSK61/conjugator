@@ -16,6 +16,9 @@
 # notes:        This is a private program.
 #
 ############################################################
+inputDir=input
+outputDir=output
+
 function CreateListFile()
 {
 
@@ -31,10 +34,11 @@ function CreateListFile()
 function CreateVerbFile()
 {
 
-    cd $1
+    echo Generating recording for verb $1
+    cd $inputDir/$1
     listFile=list.txt
     CreateListFile $listFile
-    ffmpeg -f concat -safe 0 -i list.txt -vn ../../$2
+    ffmpeg -f concat -safe 0 -i list.txt -vn ../../$outputDir/$1.m4a
     rm $listFile
 
 }
@@ -42,22 +46,24 @@ function CreateVerbFile()
 function ProcessVerb()
 {
 
-    outFile=output/$(basename $1).m4a
-
-    if ! [ -f $outFile ]
+    if [ -f $outputDir/$1.m4a ]
        then
 
-        (CreateVerbFile $1 $outFile)
+        echo Verb $1 already exists, skipping...
+
+       else
+
+        (CreateVerbFile $1)
 
        fi
 
 }
 
-mkdir -p output
+mkdir -p $outputDir
 
-for verb in input/*
+for verb in $inputDir/*
    do
 
-    ProcessVerb $verb
+    ProcessVerb $(basename $verb)
 
    done
