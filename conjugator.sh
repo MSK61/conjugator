@@ -34,8 +34,22 @@ function CreateVerbFile()
     cd $1
     listFile=list.txt
     CreateListFile $listFile
-    ffmpeg -f concat -safe 0 -i list.txt -vn ../../output/$(basename $1).m4a
+    ffmpeg -f concat -safe 0 -i list.txt -vn ../../$2
     rm $listFile
+
+}
+
+function ProcessVerb()
+{
+
+    outFile=output/$(basename $1).m4a
+
+    if ! [ -f $outFile ]
+       then
+
+        (CreateVerbFile $1 $outFile)
+
+       fi
 
 }
 
@@ -44,6 +58,6 @@ mkdir output
 for verb in input/*
    do
 
-    (CreateVerbFile $verb)
+    ProcessVerb $verb
 
    done
