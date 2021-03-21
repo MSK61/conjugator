@@ -34,13 +34,14 @@ function CreateListFile()
 function CreateVerbFile()
 {
 
-    echo Generating recording for verb $1
+    echo -n "Generating recording for verb $1... "
     cd $inputDir/$1
     listFile=list.txt
     CreateListFile $listFile
     ffmpeg -f concat -safe 0 -i list.txt -vn ../../$outputDir/$1.m4a \
         2> /dev/null
     rm $listFile
+    echo Done
 
 }
 
@@ -50,7 +51,7 @@ function ProcessVerb()
     if [ -f $outputDir/$1.m4a ]
        then
 
-        echo Verb $1 already exists, skipping...
+        echo Verb $1 already exists, skipping
 
        else
 
